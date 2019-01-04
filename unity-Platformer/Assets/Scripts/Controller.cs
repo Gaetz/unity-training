@@ -98,7 +98,7 @@ public class Controller : MonoBehaviour {
 
 		for(int i = 0; i < verticalRayCount; i++) {
 			Vector2 rayOrigin = (rayDirectionY == -1)? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
-			rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
+			rayOrigin += Vector2.right * (verticalRaySpacing * i);
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * rayDirectionY, rayMagnitude, collisionMask);
 
 			Debug.DrawRay(rayOrigin, Vector2.up * rayDirectionY * rayMagnitude, Color.red);
