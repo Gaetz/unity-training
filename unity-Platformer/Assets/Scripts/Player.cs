@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 	[SerializeField] float jumpTimeToApex = 0.4f;
 	[SerializeField] float accelerationTimeAirborn = 0.2f;
 	[SerializeField] float accelerationTimeGrounded = 0.1f;
-	[SerializeField] float moveSpeed = 6f;
+	[SerializeField] float moveSpeed = 10f;
 
 	float gravity;
 	float jumpVelocity;
