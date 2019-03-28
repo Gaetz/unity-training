@@ -13,6 +13,9 @@ public class InputManager : MonoBehaviour {
 	float minHeight = 10f;
   float maxHeight = 50f;
 
+  GameObject selectedObject;
+  ObjectInfo selectedInfo;
+
   void Start() {
     rotation = Camera.main.transform.rotation;
   }
@@ -20,7 +23,24 @@ public class InputManager : MonoBehaviour {
 	void Update () {
     MoveCamera();
     RotateCamera();
+    if(Input.GetMouseButton(0)) {
+      Selection();
+    }
 	}
+
+  void Selection() {
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    RaycastHit hit;
+    if(Physics.Raycast(ray, out hit, 100)) {
+      if (hit.collider.tag == "Ground") {
+        selectedObject = null;
+      } else if (hit.collider.tag == "Selectable") {
+        selectedObject = hit.collider.gameObject;
+        selectedInfo = selectedObject.GetComponent<ObjectInfo>();
+        selectedInfo.IsSelected = true;
+      }
+    }
+  }
 
   void MoveCamera() {
     float moveX = Camera.main.transform.position.x;
