@@ -34,10 +34,12 @@ public class InputManager : MonoBehaviour {
     if(Physics.Raycast(ray, out hit, 100)) {
       if (hit.collider.tag == "Ground") {
         selectedObject = null;
+        Debug.Log("Deselected");
       } else if (hit.collider.tag == "Selectable") {
         selectedObject = hit.collider.gameObject;
         selectedInfo = selectedObject.GetComponent<ObjectInfo>();
         selectedInfo.IsSelected = true;
+        Debug.Log("Selected " + selectedInfo.ObjectName);
       }
     }
   }
