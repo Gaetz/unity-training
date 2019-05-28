@@ -235,6 +235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d21fae42dcb4f542abddb9e4ae2681b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Stone: 0
+  maxStone: 100
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
