@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1648b21b9d29f7a48803901a2b94d16f, type: 3}
+  m_Name: ShapeFactory
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 114272132057453310, guid: c36f27ef421394644a30e3f48856c647, type: 2}
+  - {fileID: 114905010394510262, guid: 3cca51af257ac2841936f2f6c7d6dbb0, type: 2}
+  - {fileID: 114284630140681668, guid: 52d3fd5b946eb8240893b29ae71736e5, type: 2}
+  materials:
+  - {fileID: 2100000, guid: 6a73e9c339143a341aedfab36e6b3402, type: 2}
+  - {fileID: 2100000, guid: 2f38840fe0a0e3645b4d2eb58f3ffe4b, type: 2}
+  - {fileID: 2100000, guid: 3e74d0db01e8487419a4a0f82bf064d1, type: 2}
+  recycle: 1
