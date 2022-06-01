@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu]
 public class ShapeFactory : ScriptableObject {
@@ -10,6 +11,9 @@ public class ShapeFactory : ScriptableObject {
 	[SerializeField] bool recycle;
 
 	List<Shape>[] pools;
+	
+	// Scene that will contain instanced shapes
+	private Scene poolScene;
 
 	public Shape Get (int shapeId = 0, int materialId = 0) {
 		Shape instance;
@@ -26,6 +30,7 @@ public class ShapeFactory : ScriptableObject {
 			} else {
 				instance = Instantiate(prefabs[shapeId]);
 				instance.ShapeId = shapeId;
+				SceneManager.MoveGameObjectToScene(instance.gameObject, poolScene);
 			}
 		} else {
 			instance = Instantiate(prefabs[shapeId]);
@@ -44,6 +49,32 @@ public class ShapeFactory : ScriptableObject {
 		for (int i = 0; i < pools.Length; i++) {
 			pools[i] = new List<Shape>();
 		}
+
+		// Allow recompilation for scene pooling
+		if (Application.isEditor)
+		{
+			
+			poolScene = SceneManager.GetSceneByName(name);
+			if (poolScene.isLoaded)
+			{
+				// Repopulate the shape list with already used shapes 
+				GameObject[] rootObjects = poolScene.GetRootGameObjects();
+				for (int i = 0; i < rootObjects.Length; i++)
+				{
+					Shape pooledShape = rootObjects[i].GetComponent<Shape>();
+					
+					// If the shape is not active, it should be added to the awaiting pool
+					if (pooledShape.gameObject.activeSelf)
+					{
+						pools[pooledShape.ShapeId].Add(pooledShape);
+					}
+				}
+				return;
+			}
+		}
+
+		// Shapes created in a specific scene
+		poolScene = SceneManager.CreateScene(name);
 	}
 
 	public void Reclaim (Shape shapeToRecycle) {

@@ -73,7 +73,8 @@ public class Game : PersistableObject {
 			shapeFactory.Reclaim(shapes[index]);
 			int lastIndex = shapes.Count - 1;
 			shapes[index] = shapes[lastIndex];
-			shapes.RemoveAt(lastIndex);		}
+			shapes.RemoveAt(lastIndex);		
+		}
 	}
 
 	void BeginNewGame() {
