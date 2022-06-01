@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : PersistableObject {
 
@@ -22,8 +23,20 @@ public class Game : PersistableObject {
 	float destructionProgress;
 
 
-	void Awake() {
+	void Start() {
 		shapes = new List<Shape>();
+
+		if (Application.isEditor)
+		{
+			Scene loadedLevel = SceneManager.GetSceneByName("Level1");
+			if (loadedLevel.isLoaded)
+			{
+				SceneManager.SetActiveScene(loadedLevel);
+				return;
+			}
+		}
+
+		StartCoroutine(LoadLevel());
 	}
 
 	void Update() {
@@ -107,5 +120,13 @@ public class Game : PersistableObject {
 			instance.Load(reader);
 			shapes.Add(instance);
 		}
+	}
+
+	private IEnumerator LoadLevel()
+	{
+		enabled = false;
+		yield return SceneManager.LoadSceneAsync("Level1", LoadSceneMode.Additive);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level1"));
+		enabled = true;
 	}
 }
