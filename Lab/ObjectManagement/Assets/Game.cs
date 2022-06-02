@@ -15,7 +15,8 @@ public class Game : PersistableObject {
 	[SerializeField] KeyCode saveKey = KeyCode.S;
 	[SerializeField] KeyCode loadKey = KeyCode.L;
 	[SerializeField] int levelCount;
-	
+	[SerializeField] public SpawnZone SpawnZoneOfLevel;
+
 	List<Shape> shapes;
 	string savePath;
 	int loadedLevelBuildIndex;
@@ -25,9 +26,16 @@ public class Game : PersistableObject {
 	float creationProgress;
 	public float DestructionSpeed { get; set; }
 	float destructionProgress;
+	
+	public static Game Instance { get; private set; }
 
-
-	void Start() {
+	void OnEnable () {
+		Instance = this;
+	}
+	
+	void Start()
+	{
+		Instance = this;
 		shapes = new List<Shape>();
 
 		if (Application.isEditor)
@@ -94,7 +102,7 @@ public class Game : PersistableObject {
 	void CreateShape() {
 		Shape instance = shapeFactory.GetRandom();
 		Transform t = instance.transform;
-		t.localPosition = Random.insideUnitSphere * 5f;
+		t.localPosition = SpawnZoneOfLevel.SpawnPoint;
 		t.localRotation = Random.rotation;
 		t.localScale = Vector3.one * Random.Range(0.1f, 1f);
 		instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));
