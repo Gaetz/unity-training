@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8fc8e2d1-c1c9-4fad-bbe2-6b7630f6b45e" name="Changes" comment="Pooling in scenes">
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" afterDir="false" />
+    <list default="true" id="8fc8e2d1-c1c9-4fad-bbe2-6b7630f6b45e" name="Changes" comment="Proper async loading">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObjectManagement/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObjectManagement/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
@@ -15,6 +12,10 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ads@3.7.5/Tests/Editor/Advertisement/SkAdNetworkParserTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Rufflerim/_Lab/unity-training/Lab/ObjectManagement/ProjectSettings/EditorBuildSettings.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -64,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1654090430115</updated>
-      <workItem from="1654090438717" duration="10218000" />
+      <workItem from="1654090438717" duration="12930000" />
     </task>
     <task id="LOCAL-00001" summary="Pooling in scenes">
       <created>1654106265445</created>
@@ -73,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654106265445</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Proper async loading">
+      <created>1654110261367</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654110261367</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -96,6 +104,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Pooling in scenes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pooling in scenes" />
+    <MESSAGE value="Proper async loading" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proper async loading" />
   </component>
 </project>

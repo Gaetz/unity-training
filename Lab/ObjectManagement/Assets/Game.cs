@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Game : PersistableObject {
 
-	const int saveVersion = 1;
+	const int saveVersion = 2;
 
 	[SerializeField] ShapeFactory shapeFactory;
 	[SerializeField] PersistentStorage storage;
@@ -14,8 +14,12 @@ public class Game : PersistableObject {
 	[SerializeField] KeyCode newGameKey = KeyCode.N;
 	[SerializeField] KeyCode saveKey = KeyCode.S;
 	[SerializeField] KeyCode loadKey = KeyCode.L;
+	[SerializeField] int levelCount;
+	
 	List<Shape> shapes;
 	string savePath;
+	int loadedLevelBuildIndex;
+
 
 	public float CreationSpeed { get; set; }
 	float creationProgress;
@@ -28,15 +32,20 @@ public class Game : PersistableObject {
 
 		if (Application.isEditor)
 		{
-			Scene loadedLevel = SceneManager.GetSceneByName("Level1");
-			if (loadedLevel.isLoaded)
+			for (int i = 0; i < SceneManager.sceneCount; i++)
 			{
-				SceneManager.SetActiveScene(loadedLevel);
-				return;
+				Scene loadedLevel = SceneManager.GetSceneAt(i);
+				if (loadedLevel.name.Contains("Level"))
+				{
+					SceneManager.SetActiveScene(loadedLevel);
+					loadedLevelBuildIndex = loadedLevel.buildIndex;
+					return;
+				}
 			}
+
 		}
 
-		StartCoroutine(LoadLevel());
+		StartCoroutine(LoadLevel(1));
 	}
 
 	void Update() {
@@ -55,6 +64,18 @@ public class Game : PersistableObject {
 		else if (Input.GetKeyDown(loadKey)) {
 			BeginNewGame();
 			storage.Load(this);
+		}
+		else 
+		{
+			for (int i = 1; i <= levelCount; i++) 
+			{
+				if (Input.GetKeyDown(KeyCode.Alpha0 + i)) 
+				{
+					BeginNewGame();
+					StartCoroutine(LoadLevel(i));
+					return;
+				}
+			}
 		}
 
 		creationProgress += Time.deltaTime * CreationSpeed;
@@ -99,6 +120,7 @@ public class Game : PersistableObject {
 
 	public override void Save (GameDataWriter writer) {
 		writer.Write(shapes.Count);
+		writer.Write(loadedLevelBuildIndex);
 		for (int i = 0; i < shapes.Count; i++) {
 			writer.Write(shapes[i].ShapeId);
 			writer.Write(shapes[i].MaterialId);
@@ -112,7 +134,8 @@ public class Game : PersistableObject {
 			Debug.LogError("Unsupported future save version " + version);
 			return;
 		}
-		int count = reader.ReadInt();
+		int count = version <= 0 ? -version : reader.ReadInt();
+		StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
 		for (int i = 0; i < count; i++) {
 			int shapeId = version > 0 ? reader.ReadInt() : 0;
 			int materialId = version > 0 ? reader.ReadInt() : 0;
@@ -122,11 +145,16 @@ public class Game : PersistableObject {
 		}
 	}
 
-	private IEnumerator LoadLevel()
+	private IEnumerator LoadLevel(int levelBuildIndex)
 	{
 		enabled = false;
-		yield return SceneManager.LoadSceneAsync("Level1", LoadSceneMode.Additive);
-		SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level1"));
+		if (loadedLevelBuildIndex > 0)
+		{
+			yield return SceneManager.UnloadSceneAsync(loadedLevelBuildIndex);
+		}
+		yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
+		loadedLevelBuildIndex = levelBuildIndex;
 		enabled = true;
 	}
 }

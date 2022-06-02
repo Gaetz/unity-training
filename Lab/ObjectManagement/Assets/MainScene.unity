@@ -297,6 +297,7 @@ MonoBehaviour:
   newGameKey: 110
   saveKey: 115
   loadKey: 108
+  levelCount: 2
 --- !u!4 &424169014
 Transform:
   m_ObjectHideFlags: 0
