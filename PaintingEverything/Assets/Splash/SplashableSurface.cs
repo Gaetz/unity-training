@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyShaderBehavior : MonoBehaviour
+public class SplashableSurface : MonoBehaviour
 {
     private const int textureHeight = 256;
     private const int textureWidth = 256;

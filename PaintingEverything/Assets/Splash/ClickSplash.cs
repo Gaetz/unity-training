@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickScript : MonoBehaviour {
+public class ClickSplash : MonoBehaviour {
     public Camera mainCamera;
     public Texture2D splashTexture;
 	
@@ -13,9 +13,9 @@ public class ClickScript : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
             {
-                MyShaderBehavior script = hit.collider.gameObject.GetComponent<MyShaderBehavior>();
-                if (null != script)
-                    script.PaintOn(hit.textureCoord, splashTexture);
+                SplashableSurface surface = hit.collider.gameObject.GetComponent<SplashableSurface>();
+                if (null != surface)
+                    surface.PaintOn(hit.textureCoord, splashTexture);
             }
         }
 	}
