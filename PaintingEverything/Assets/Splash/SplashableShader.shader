@@ -1,4 +1,4 @@
-﻿Shader "Custom/MyShader" {
+﻿Shader "Custom/SplashableShader" {
 	Properties {
 		[HideInInspector]_DrawingTex("Drawing texture", 2D) = "" {}
 
