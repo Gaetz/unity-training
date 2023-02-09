@@ -1,6 +1,17 @@
 using UnityEditor;
 using UnityEngine;
 
+enum DeadZoneStatus
+{
+    In, Out, CatchingUp
+}
+
+enum CameraStatus
+{
+    ThirdPerson, FirstPerson, Camera1
+}
+
+
 public class SpringArm : MonoBehaviour
 {
     #region Rotation Settings
@@ -34,6 +45,10 @@ public class SpringArm : MonoBehaviour
     
     private Vector3 endPoint;
     private Vector3 cameraPosition;
+    
+    [SerializeField] private float deadZoneSize = 2.0f;
+    [SerializeField] private float targetZoneSize = 0.1f;
+    private DeadZoneStatus deadZoneStatus = DeadZoneStatus.In;
     
     #endregion
 
@@ -70,6 +85,17 @@ public class SpringArm : MonoBehaviour
 
     #endregion
     
+    #region Camera Transition
+
+    [Space]
+    [Header("Camera Transition \n--------------")]
+    [Space]
+    
+    [SerializeField] private Transform camera1;
+    private CameraStatus cameraStatus = CameraStatus.ThirdPerson;
+    
+    #endregion
+    
     
     // Start is called before the first frame update
     void Start()
@@ -89,19 +115,82 @@ public class SpringArm : MonoBehaviour
         // If target is null, return from here: NullReference check
         if(!target)
             return;
+
+        Vector3 targetPosition = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            cameraStatus = CameraStatus.ThirdPerson;
+        } 
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            cameraStatus = CameraStatus.Camera1;
+        }
+
+        switch (cameraStatus)
+        {
+            case CameraStatus.Camera1:
+                targetPosition = UpdateCamera1();
+                break;
+            
+            case CameraStatus.ThirdPerson:
+                targetPosition = UpdateThirdPerson();
+                break;
+        }
         
+        // Follow the target applying targetOffset
+        transform.position = Vector3.SmoothDamp(transform.position, 
+            targetPosition, ref moveVelocity, movementSmoothTime);
+    }
+
+    Vector3 UpdateThirdPerson()
+    {
+        Vector3 targetPosition = Vector3.zero;
+
         // Collision check
-        if (doCollisionTest)
+        if (doCollisionTest) 
             CheckCollisions();
         SetCameraTransform();
 
         // Handle mouse inputs for rotations
         if (useControlRotation && Application.isPlaying)
             Rotate();
-        
-        // Follow the target applying targetOffset
-        transform.position = Vector3.SmoothDamp(transform.position, 
-            target.position + targetOffset, ref moveVelocity, movementSmoothTime);
+
+            
+        float distanceToTarget = Vector3.Distance(transform.position, target.position + targetOffset);
+        if (distanceToTarget > deadZoneSize)
+        {
+            deadZoneStatus = DeadZoneStatus.Out;
+            targetPosition = target.position + targetOffset;
+        }
+        else
+        {
+            switch (deadZoneStatus)
+            {
+                case DeadZoneStatus.In:
+                    targetPosition = transform.position;
+                    break;
+                case DeadZoneStatus.Out:
+                    targetPosition = target.position + targetOffset;
+                    deadZoneStatus = DeadZoneStatus.CatchingUp;
+                    break;
+                case DeadZoneStatus.CatchingUp:
+                    targetPosition = target.position + targetOffset;
+                    if (distanceToTarget <= targetZoneSize)
+                    {
+                        deadZoneStatus = DeadZoneStatus.In;
+                    }
+                    break;
+            }
+        }
+
+        return targetPosition;
+    }
+    
+    Vector3 UpdateCamera1()
+    {
+        transform.LookAt(target);
+        return camera1.position;
     }
     
     /// <summary>
